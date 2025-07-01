@@ -4,6 +4,7 @@ import 'payments/pay_with_bank.dart';
 import 'payments/pos_swipe_card.dart';
 import 'payments/cash_payment.dart';
 import 'payments/view_receipts.dart';
+import 'payments/protocol_pay_page.dart'; // Import the ProtocolPayPage
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -38,10 +39,55 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            PayWithBank(onPaymentComplete: _generateReceipt),
-            POSSwipeCard(onPaymentComplete: _generateReceipt),
-            CashPayment(onPaymentComplete: _generateReceipt),
-            ViewReceipts(),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PayWithBank(onPaymentComplete: _generateReceipt)),
+                );
+              },
+              child: Text('Pay with Bank'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => POSSwipeCard(onPaymentComplete: _generateReceipt)),
+                );
+              },
+              child: Text('POS Swipe Card'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CashPayment(onPaymentComplete: _generateReceipt)),
+                );
+              },
+              child: Text('Cash Payment'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ViewReceipts()),
+                );
+              },
+              child: Text('View Receipts'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProtocolPayPage()),
+                );
+              },
+              child: Text('Protocol Payment'),
+            ),
           ],
         ),
       ),
