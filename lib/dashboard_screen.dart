@@ -53,26 +53,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => POSSwipeCard(onPaymentComplete: _generateReceipt)),
-                );
-              },
-              child: Text('POS Swipe Card'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => CashPayment(onPaymentComplete: _generateReceipt)),
-                );
-              },
-              child: Text('Cash Payment'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
                   MaterialPageRoute(builder: (context) => ViewReceipts()),
                 );
               },
