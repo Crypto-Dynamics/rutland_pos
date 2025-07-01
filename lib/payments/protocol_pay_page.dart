@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProtocolPayPage extends StatefulWidget {
   @override
@@ -47,27 +46,54 @@ class _ProtocolPayPageState extends State<ProtocolPayPage> {
   };
 
   String? selectedProtocol;
+  TextEditingController cardNumberController = TextEditingController();
+  TextEditingController expiryController = TextEditingController();
+  TextEditingController cvvController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
 
-  void _submitProtocol() async {
-    if (selectedProtocol != null) {
-      final response = await http.post(
-        Uri.parse('http://127.0.0.1:5000/protocol'),
-        body: jsonEncode({'protocol': selectedProtocol}),
+  void _submitPayment() {
+    String cardNumber = cardNumberController.text;
+    String expiry = expiryController.text;
+    String cvv = cvvController.text;
+    String amount = amountController.text;
+
+    if (selectedProtocol == null || cardNumber.isEmpty || expiry.isEmpty || cvv.isEmpty || amount.isEmpty) {
+      Fluttertoast.showToast(
+        msg: "Please fill in all fields",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
       );
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Protocol submitted successfully')),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to submit protocol')),
-        );
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select a protocol')),
-      );
+      return;
     }
+
+    // Simulate payment processing
+    Fluttertoast.showToast(
+      msg: "Payment successful! Amount: \$amount",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+    );
+
+    // Print receipt
+    _printReceipt(cardNumber, expiry, cvv, amount);
+  }
+
+  void _printReceipt(String cardNumber, String expiry, String cvv, String amount) {
+    String receipt = '''
+    Receipt
+    -----------------
+    Protocol: $selectedProtocol
+    Card Number: $cardNumber
+    Expiry: $expiry
+    CVV: $cvv
+    Amount: \$$amount
+    -----------------
+    Thank you for your payment!
+    ''';
+    Fluttertoast.showToast(
+      msg: receipt,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+    );
   }
 
   @override
@@ -97,9 +123,29 @@ class _ProtocolPayPageState extends State<ProtocolPayPage> {
               },
             ),
             SizedBox(height: 20),
+            TextField(
+              controller: cardNumberController,
+              decoration: InputDecoration(labelText: 'Card Number'),
+            ),
+            SizedBox(height: 10),
+            TextField(
+              controller: expiryController,
+              decoration: InputDecoration(labelText: 'Expiry Date (MMYY)'),
+            ),
+            SizedBox(height: 10),
+            TextField(
+              controller: cvvController,
+              decoration: InputDecoration(labelText: 'CVV'),
+            ),
+            SizedBox(height: 10),
+            TextField(
+              controller: amountController,
+              decoration: InputDecoration(labelText: 'Amount'),
+            ),
+            SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _submitProtocol,
-              child: Text('Submit'),
+              onPressed: _submitPayment,
+              child: Text('Pay'),
             ),
           ],
         ),
